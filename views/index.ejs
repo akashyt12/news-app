@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daily News</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <h1>🗞️ India Daily News</h1>
+  <div class="container">
+    <% articles.forEach(article => { %>
+      <div class="card">
+        <h2><%= article.title %></h2>
+        <% if (article.urlToImage) { %>
+          <img src="<%= article.urlToImage %>" alt="news image">
+        <% } %>
+        <p><%= article.description %></p>
+        <a href="<%= article.url %>" target="_blank">Read Full</a>
+      </div>
+    <% }); %>
+  </div>
+</body>
+</html>
