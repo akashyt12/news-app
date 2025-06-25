@@ -1,24 +1,30 @@
-const express = require('express');
-const axios = require('axios');
+const express = require("express");
+const axios = require("axios");
 const app = express();
 
-app.set('view engine', 'ejs');
-app.use(express.static('public'));
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
 
-const NEWS_API_KEY = 'dbc499db30714d928994694f9e597717';
+app.use(express.static("public"));
 
-app.get('/', async (req, res) => {
+app.get("/", async (req, res) => {
   try {
-    const response = await axios.get(
-      `https://newsapi.org/v2/top-headlines?country=in&apiKey=${NEWS_API_KEY}`
-    );
+    const response = await axios.get("https://newsapi.org/v2/top-headlines", {
+      params: {
+        country: "in",
+        apiKey: process.env.NEWS_API_KEY || "dbc499db30714d928994694f9e597717",
+      },
+    });
+
     const articles = response.data.articles;
-    res.render('index', { articles });
+    res.render("index", { articles });
   } catch (error) {
-    res.send('Error fetching news.');
+    console.error("Error fetching news:", error);
+    res.send("Failed to fetch news.");
   }
 });
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
